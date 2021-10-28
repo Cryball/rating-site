@@ -1,7 +1,9 @@
 import { Button, Htag, Paragragh, Rating, Tag } from "../components";
 import React, { useState } from "react";
+import { withLayout } from "../Layout/Layout";
+import axios from "axios";
 
-export default function Home(): JSX.Element {
+function Home(): JSX.Element {
   const [rating, setrating] = useState(4);
 
   return (<>
@@ -18,3 +20,16 @@ export default function Home(): JSX.Element {
   </>
   );
 }
+
+export default withLayout(Home);
+
+export const getStaticProps: GetStaticProps = async () => {
+  const firstCategory = 0;
+  const { data: menu } = axios.post(process.env.NEXT_PUBLIC_DOMAIN + '/api/top-page/find');
+  return {
+    props: {
+      menu,
+      firstCategory
+    }
+  };
+};
